@@ -1,0 +1,27 @@
+hydra:
+  searchpath:
+    - file://verl/trainer/config
+
+defaults:
+  - ppo_trainer
+  - _self_
+
+actor_rollout_ref:
+  actor:
+    _target_: recipe.bapo.config.BAPOActorConfig
+    policy_loss:
+      _target_: recipe.bapo.config.BAPOPolicyLossConfig
+      loss_mode: bapo
+      adv_ratio_target: 1
+      ratio_lower_start: 0.6
+      ratio_lower_max: 0.8
+      ratio_lower_step: 0.05
+      ratio_upper_start: 1.2
+      ratio_upper_max: 2.0
+      ratio_upper_step: 0.05
+      eps: 1.0e-8
+
+algorithm:
+  adv_estimator: grpo
+
+
