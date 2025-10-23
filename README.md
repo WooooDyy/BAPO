@@ -2,13 +2,9 @@
 
 # BAPO: Balanced Policy Optimization with Adaptive Clipping for LLMs
 
-[![Paper](https://img.shields.io/badge/paper-A42C25?style=for-the-badge&logo=arxiv&logoColor=white)](https://arxiv.org/abs/2505.XXXXX) [![Github](https://img.shields.io/badge/BAPO-000000?style=for-the-badge&logo=github&logoColor=000&logoColor=white)](https://github.com/WooooDyy/BAPO) [![Twitter](https://img.shields.io/badge/Twitter-%23000000.svg?style=for-the-badge&logo=twitter&logoColor=white)](https://x.com/your_twitter)
+[![Paper](https://img.shields.io/badge/paper-A42C25?style=for-the-badge&logo=arxiv&logoColor=white)](http://arxiv.org/abs/2510.18927) [![Github](https://img.shields.io/badge/BAPO-000000?style=for-the-badge&logo=github&logoColor=000&logoColor=white)](https://github.com/WooooDyy/BAPO) [![Twitter](https://img.shields.io/badge/Twitter-%23000000.svg?style=for-the-badge&logo=twitter&logoColor=white)](https://x.com/your_twitter)
 
-<div align="center" style="font-family: Arial, sans-serif; margin-top: 10px;">
-  <p style="color: #666; font-size: 0.9em;">
-    Note: The arXiv paper link is not yet available. Please refer to <a href="./paper.pdf" style="color: #A42C25;">paper.pdf</a> for the full paper.
-  </p>
-</div>
+
 
 <div align="center" style="font-family: Arial, sans-serif;">
   <p>
