@@ -28,8 +28,11 @@ def _compute_effective_advantage(
 ) -> tuple[torch.Tensor, torch.Tensor]:
     """Compute masked effective advantage and the positive/negative sums."""
 
-    clip_min = ratio.new_tensor(1.0 - clip_low)
-    clip_max = ratio.new_tensor(1.0 + clip_high)
+    # NOTE:
+    # In the BAPO recipe, clip_low/clip_high are **explicit importance-ratio bounds**
+    # (e.g. 0.6 and 1.2), NOT epsilons for (1±eps).
+    clip_min = ratio.new_tensor(float(clip_low))
+    clip_max = ratio.new_tensor(float(clip_high))
 
     ratio_pos = torch.minimum(ratio, clip_max)
     ratio_neg = torch.maximum(ratio, clip_min)
@@ -39,6 +42,17 @@ def _compute_effective_advantage(
 
     pos_contrib = effective_adv.clamp(min=0).sum()
     neg_contrib = (-effective_adv.clamp(max=0)).sum()
+
+    # Make the bound-search decision **globally consistent** across DP ranks.
+    # Otherwise each rank may choose different bounds (because each sees different data),
+    # and the final all-reduced gradient corresponds to a mixture of objectives.
+    if torch.distributed.is_available() and torch.distributed.is_initialized():
+        stats = torch.stack(
+            [pos_contrib.to(torch.float32), neg_contrib.to(torch.float32)],
+        )
+        torch.distributed.all_reduce(stats, op=torch.distributed.ReduceOp.SUM)
+        pos_contrib = stats[0].to(pos_contrib.dtype)
+        neg_contrib = stats[1].to(neg_contrib.dtype)
 
     if torch.all(neg_contrib <= 0):
         pos_neg_ratio = ratio.new_tensor(float("inf"))
@@ -95,9 +109,6 @@ def compute_policy_loss_bapo(
     target_ratio = max(pl_config.adv_ratio_target, 0.0)
     eps = pl_config.eps
 
-    clip_low_max = max(clip_low_cur, clip_low_max)
-    clip_high_max = max(clip_high_cur, clip_high_max)
-
     negative_approx_kl = torch.clamp(log_prob - old_log_prob, min=-20.0, max=20.0)
     ratio = torch.exp(negative_approx_kl)
 
@@ -107,7 +118,7 @@ def compute_policy_loss_bapo(
         ratio=ratio,
         advantages=advantages,
         response_mask=response_mask,
-        clip_low=1.0 - ratio_low_cur + ratio_low_cur - 1.0 if False else ratio_low_cur,
+        clip_low=ratio_low_cur,
         clip_high=ratio_high_cur,
         eps=eps,
     )
