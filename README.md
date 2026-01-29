@@ -95,11 +95,14 @@ BAPO consistently yields significant performance improvements and enables more s
 If you find this work helpful, please cite us:
 
 ```bibtex
-@article{bapo2025stabilizing,
-  title={STABILIZING OFF-POLICY REINFORCEMENT LEARNING FOR LLMS VIA BALANCED POLICY OPTIMIZATION WITH ADAPTIVE CLIPPING},
-  author={Anonymous authors},
-  journal={},
-  year={2025}
+@misc{xi2025bapostabilizingoffpolicyreinforcement,
+      title={BAPO: Stabilizing Off-Policy Reinforcement Learning for LLMs via Balanced Policy Optimization with Adaptive Clipping}, 
+      author={Zhiheng Xi and Xin Guo and Yang Nan and Enyu Zhou and Junrui Shen and Wenxiang Chen and Jiaqi Liu and Jixuan Huang and Zhihao Zhang and Honglin Guo and Xun Deng and Zhikai Lei and Miao Zheng and Guoteng Wang and Shuo Zhang and Peng Sun and Rui Zheng and Hang Yan and Tao Gui and Qi Zhang and Xuanjing Huang},
+      year={2025},
+      eprint={2510.18927},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2510.18927}, 
 }
 ```
 
